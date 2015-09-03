@@ -28,7 +28,7 @@ TcpProxyConfiguration configuration = new TcpProxyConfiguration()
 ```
 Then, initialize Nancy and Fleck, followed by the WebSocketServer.
 
-```chsarp
+```csharp
             using (var nancyHost = new NancyHost(new Uri("http://localhost:8081")))
             using (var websocketServer = new WebSocketServer("ws://0.0.0.0:8082"))
             using (var tcpProxy = new TcpProxyServer(configuration))
