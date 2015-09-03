@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title> WebSocketProxy Hello World </title>
+	</head>
+	
+	<body>
+		<p> This is the WebSocket Proxy Hello World Page </p>
+	</body>
+
+	<script>
+		var webSocket = new WebSocket("ws://localhost:8080");
+		var intervalID;
+		
+		webSocket.onopen = function(event) {
+			if (intervalID) clearInterval(intervalID);
+			
+			intervalID = setInterval(function() {
+				console.log('Sending websocket message');
+				webSocket.send('Hello World');
+			}, 1000);
+		
+			console.log('websocket on open');
+		}
+		
+		websocket.onclose = function(event) {
+			if (intervalID) clearInterval(intervalID);
+			console.log('websocket close');
+		}
+		
+	</script>
+	
+</html>
