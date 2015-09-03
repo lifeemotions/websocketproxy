@@ -1,5 +1,14 @@
 WebSocketProxy is a lightweight C# library which allows you to connect to an HTTP server and websocket server throught the same TCP port.
 This library is independent on which web frameworks are used for handling websocket and http requests.
+
+# Installation
+
+Installation can be done using NuGet.
+
+```
+Install-Package WebSocketProxy
+```
+
 # Sample Usage
 The project "WebSocket.Sample" contains a sample usage using [NancyFX](https://github.com/NancyFx/Nancy) and [Fleck](https://github.com/statianzo/Fleck).
 
