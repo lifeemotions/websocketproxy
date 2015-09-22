@@ -12,6 +12,7 @@ namespace WebSocketProxy
         private readonly TcpProxyConfiguration _configuration;
         private X509Certificate2 _certificate;
         private readonly TcpConnectionManager _tcpConnectionManager;
+        private bool _closing;
 
         public int ConnectionCount
         {
@@ -60,6 +61,8 @@ namespace WebSocketProxy
 
         private void TcpClientAcceptCallback(IAsyncResult asyncResult)
         {
+            if (_closing)
+                return;
 
             DoBeginListenForClients();
 
@@ -172,8 +175,11 @@ namespace WebSocketProxy
 
         public void Dispose()
         {
-            if (_tcpListener == null) return;
-            
+            if (_tcpListener == null)
+                return;
+
+            _closing = true;
+
             try
             {
                 _tcpListener.Stop();
