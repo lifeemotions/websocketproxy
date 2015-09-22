@@ -12,6 +12,13 @@ namespace WebSocketProxy
         private readonly TcpProxyConfiguration _configuration;
         private X509Certificate2 _certificate;
         private readonly TcpConnectionManager _tcpConnectionManager;
+        private bool _closing;
+
+        public static class Log
+        {
+            public static Action<string> Info { get;} = (_) => Console.WriteLine($"{DateTime.Now}:{_}");
+            public static Action<string, Exception> Error { get; } = (_,x) => Console.WriteLine($"{DateTime.Now}:{_}. {x}");
+        }
 
         public int ConnectionCount
         {
@@ -42,7 +49,7 @@ namespace WebSocketProxy
             _tcpListener.Start();
             DoBeginListenForClients();
 
-            Console.WriteLine("{0}: Proxy Server Started at {1}", DateTime.Now, _configuration.PublicHost);
+            Log.Info($"Proxy Server Started at {_configuration.PublicHost}");
         }
 
         private void DoBeginListenForClients()
@@ -60,6 +67,8 @@ namespace WebSocketProxy
 
         private void TcpClientAcceptCallback(IAsyncResult asyncResult)
         {
+            if (_closing)
+                return;
 
             DoBeginListenForClients();
 
@@ -172,8 +181,11 @@ namespace WebSocketProxy
 
         public void Dispose()
         {
-            if (_tcpListener == null) return;
-            
+            if (_tcpListener == null)
+                return;
+
+            _closing = true;
+
             try
             {
                 _tcpListener.Stop();
