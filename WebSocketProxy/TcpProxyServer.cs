@@ -16,8 +16,8 @@ namespace WebSocketProxy
 
         public static class Log
         {
-            public static Action<string> Info { get;} = (_) => Console.WriteLine($"{DateTime.Now}:{_}");
-            public static Action<string, Exception> Error { get; } = (_,x) => Console.WriteLine($"{DateTime.Now}:{_}. {x}");
+            public static Action<string> Info { get; set; } = (_) => Console.WriteLine($"{DateTime.Now}:{_}");
+            public static Action<string, Exception> Error { get; set; } = (_,x) => Console.WriteLine($"{DateTime.Now}:{_}. {x}");
         }
 
         public int ConnectionCount
