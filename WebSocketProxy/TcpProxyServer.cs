@@ -14,12 +14,11 @@ namespace WebSocketProxy
         private readonly TcpConnectionManager _tcpConnectionManager;
         private bool _closing;
 
-        public static class Log
-        {
-            public static Action<string> Info { get; set; } = (_) => Console.WriteLine($"{DateTime.Now}:{_}");
-            public static Action<string, Exception> Error { get; set; } = (_,x) => Console.WriteLine($"{DateTime.Now}:{_}. {x}");
-        }
+        private readonly Logger _logger;
 
+        public Logger Log { get; private set; }
+
+        
         public int ConnectionCount
         {
             get { return _tcpConnectionManager.ConnectionCount; }
@@ -29,6 +28,7 @@ namespace WebSocketProxy
 
         public TcpProxyServer(TcpProxyConfiguration configuration)
         {
+            _logger = new Logger();
             _tcpConnectionManager = new TcpConnectionManager();
             _configuration = configuration;
             _tcpListener = new TcpListener(_configuration.PublicHost.IpAddress, _configuration.PublicHost.Port);
@@ -49,7 +49,7 @@ namespace WebSocketProxy
             _tcpListener.Start();
             DoBeginListenForClients();
 
-            Log.Info($"Proxy Server Started at {_configuration.PublicHost}");
+            Log.Info(String.Format("Proxy Server started at {0}", _configuration.PublicHost));
         }
 
         private void DoBeginListenForClients()
