@@ -16,7 +16,10 @@ namespace WebSocketProxy
 
         private readonly Logger _logger;
 
-        public Logger Log { get; private set; }
+        public Logger Log
+        {
+            get { return _logger; }
+        }
 
         
         public int ConnectionCount
