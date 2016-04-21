@@ -1,4 +1,4 @@
-WebSocketProxy ![build status](https://travis-ci.org/lifeemotions/websocketproxy.svg?branch=master) 
+WebSocketProxy ![build status](https://travis-ci.org/lifeemotions/websocketproxy.svg?branch=master) [![NuGet](https://img.shields.io/nuget/v/WebSocketProxy.svg?maxAge=2592000)]()
 =======
 
 WebSocketProxy is a lightweight C# library which allows you to connect to an HTTP server and websocket server through the same TCP port.
