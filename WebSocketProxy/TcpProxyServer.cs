@@ -21,7 +21,7 @@ namespace WebSocketProxy
             get { return _logger; }
         }
 
-        
+
         public int ConnectionCount
         {
             get { return _tcpConnectionManager.ConnectionCount; }
@@ -43,16 +43,15 @@ namespace WebSocketProxy
         {
             if (_configuration.EnableSslCertificate)
             {
-                _certificate = _configuration.SslCertificatePassword != null ? 
-                    new X509Certificate2(_configuration.SslCertificatePath, _configuration.SslCertificatePassword) : 
-                    new X509Certificate2(_configuration.SslCertificatePath);
-                
+                _certificate = _configuration.SslCertificatePassword != null
+                    ? new X509Certificate2(_configuration.SslCertificatePath, _configuration.SslCertificatePassword)
+                    : new X509Certificate2(_configuration.SslCertificatePath);
             }
 
             _tcpListener.Start();
             DoBeginListenForClients();
 
-            Log.Info(String.Format("Proxy Server started at {0}", _configuration.PublicHost));
+            Log.Info(string.Format("Proxy Server started at {0}", _configuration.PublicHost));
         }
 
         private void DoBeginListenForClients()
@@ -61,11 +60,14 @@ namespace WebSocketProxy
             {
                 _tcpListener.BeginAcceptTcpClient(TcpClientAcceptCallback, _tcpListener);
             }
+            catch (InvalidOperationException)
+            {
+                // socket has been closed
+            }
             catch (IOException)
             {
                 //
             }
-            
         }
 
         private void TcpClientAcceptCallback(IAsyncResult asyncResult)
@@ -82,7 +84,8 @@ namespace WebSocketProxy
                 TcpHost host = new TcpHost(client);
                 if (_certificate != null)
                 {
-                    host.BeginAuthenticationAsServer(_certificate, _configuration.SslProtocols, AuthenticationCallback, host);
+                    host.BeginAuthenticationAsServer(_certificate, _configuration.SslProtocols, AuthenticationCallback,
+                        host);
                 }
                 else
                 {
@@ -113,7 +116,6 @@ namespace WebSocketProxy
                 // Somehow, the authentication failed... Close the connection
                 host.Close();
             }
-            
         }
 
         private void ReadFirstPacket(TcpHost clientMachine)
@@ -129,7 +131,6 @@ namespace WebSocketProxy
             {
                 clientMachine.Close();
             }
-
         }
 
         private void FirstPacketReadCallback(IAsyncResult asyncResult)
@@ -159,7 +160,7 @@ namespace WebSocketProxy
                 Host serverMachineHost = packet.IsWebSocketPacket
                     ? _configuration.WebSocketHost
                     : _configuration.HttpHost;
-                
+
                 if (serverMachineHost != null && serverMachineHost.IsSpecified)
                 {
                     TcpHost serverMachine = TcpHost.ManufactureDefault(serverMachineHost.IpAddress,
@@ -174,12 +175,8 @@ namespace WebSocketProxy
                 {
                     clientMachine.Close();
                 }
-
             }
-            catch (IOException)
-            {
-                
-            }
+            catch (IOException) {}
         }
 
         public void Dispose()
