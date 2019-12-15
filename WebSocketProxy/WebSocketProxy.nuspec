@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/lifeemotions/websocketproxy</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>fix to avoid excepion when stopping</releaseNotes>
+    <releaseNotes>.NET Standard 2.0 migration</releaseNotes>
     <copyright>Copyright ©  2015</copyright>
     <tags>.net websocket http ssl proxy</tags>
   </metadata>
